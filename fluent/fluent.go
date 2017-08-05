@@ -303,6 +303,8 @@ func (f *Fluent) send() error {
 	f.muconn.Lock()
 	defer f.muconn.Unlock()
 
+	// store send time
+	defer met.BumpTime("send.time").End()
 	if f.conn == nil {
 		if f.reconnecting == false {
 			f.reconnecting = true
