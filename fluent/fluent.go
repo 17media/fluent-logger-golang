@@ -310,7 +310,7 @@ func (f *Fluent) send() error {
 			f.reconnecting = true
 			go f.reconnect()
 		}
-		met.BumpSum("send.err", "reason", "reconnect")
+		met.BumpSum("send.err", 1, "reason", "reconnect")
 		return errors.New("fluent#send: can't send logs, client is reconnecting")
 	}
 
@@ -327,7 +327,7 @@ func (f *Fluent) send() error {
 		}
 		_, err = f.conn.Write(f.pending)
 		if err != nil {
-			met.BumpSum("send.err", "reason", "write")
+			met.BumpSum("send.err", 1, "reason", "write")
 			f.conn.Close()
 			f.conn = nil
 		} else {
